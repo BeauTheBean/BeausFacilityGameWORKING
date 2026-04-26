@@ -1,66 +1,3 @@
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>BeausFacilityGame</title>
-
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/BeauTheBean/BeausFacilityGameWORKING@latest/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/BeauTheBean/BeausFacilityGameWORKING@latest/TemplateData/style.css">
-
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #000;
-        }
-
-        #unity-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        #unity-canvas {
-            width: 100%;
-            height: 100%;
-            background: #000;
-        }
-
-        #unity-loading-bar {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #unity-progress-bar-empty {
-            width: 220px;
-            height: 18px;
-            background: #222;
-            border: 1px solid #444;
-        }
-
-        #unity-progress-bar-full {
-            width: 0%;
-            height: 100%;
-            background: #ffffff;
-        }
-    </style>
-</head>
-
-<body>
-
-<div id="unity-container">
-    <canvas id="unity-canvas"></canvas>
-
-    <div id="unity-loading-bar">
-        <div id="unity-progress-bar-empty">
-            <div id="unity-progress-bar-full"></div>
-        </div>
-    </div>
-</div>
-
 <script>
     const canvas = document.querySelector("#unity-canvas");
     const loadingBar = document.querySelector("#unity-loading-bar");
@@ -71,7 +8,6 @@
         alert(msg);
     }
 
-    // 🔥 YOUR NEW REPO
     const buildUrl = "https://cdn.jsdelivr.net/gh/BeauTheBean/BeausFacilityGameWORKING@latest/Build";
 
     const config = {
@@ -81,7 +17,12 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "BeauTheBean",
         productName: "BeausFacilityGame",
-        productVersion: "1.0"
+        productVersion: "1.0",
+
+        // 🔥 THIS FIXES MOST BLACK SCREENS WITH .br FILES
+        decompressors: {
+            brotli: true
+        }
     };
 
     const loaderUrl = buildUrl + "/BeausFacilityGame.loader.js";
@@ -94,7 +35,7 @@
     script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
             progressBarFull.style.width = (100 * progress) + "%";
-        }).then(() => {
+        }).then((unityInstance) => {
             loadingBar.style.display = "none";
         }).catch((message) => {
             showError(message);
@@ -107,6 +48,3 @@
 
     document.body.appendChild(script);
 </script>
-
-</body>
-</html>
